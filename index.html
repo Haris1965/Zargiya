@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌹 A Digital Rose For You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-heart"></i> For My Love in Hong Kong <i class="fas fa-heart"></i></h1>
+            <p class="subtitle">Distance means so little when someone means so much</p>
+        </header>
+
+        <div class="main-content">
+            <div class="flower-container">
+                <div class="rose">
+                    <div class="petals">
+                        <div class="petal p1"></div>
+                        <div class="petal p2"></div>
+                        <div class="petal p3"></div>
+                        <div class="petal p4"></div>
+                        <div class="petal p5"></div>
+                        <div class="petal p6"></div>
+                        <div class="petal p7"></div>
+                        <div class="petal p8"></div>
+                    </div>
+                    <div class="stem"></div>
+                    <div class="leaf leaf1"></div>
+                    <div class="leaf leaf2"></div>
+                    <div class="thorns">
+                        <div class="thorn t1"></div>
+                        <div class="thorn t2"></div>
+                        <div class="thorn t3"></div>
+                    </div>
+                </div>
+                <div class="sparkle s1"></div>
+                <div class="sparkle s2"></div>
+                <div class="sparkle s3"></div>
+            </div>
+
+            <div class="message-box">
+                <div class="message-header">
+                    <i class="fas fa-envelope"></i>
+                    <h2>My Message to You</h2>
+                </div>
+                <div class="message-content">
+                    <p id="message-text">
+                        My Dearest Love,<br><br>
+                        Though miles apart, you're always in my heart.<br>
+                        Every petal of this rose carries my love for you.<br>
+                        Hong Kong may be far from Pakistan,<br>
+                        but nothing can diminish what we share.<br><br>
+                        With all my love,<br>
+                        Your [Your Name]
+                    </p>
+                </div>
+                <div class="edit-section">
+                    <textarea id="custom-message" placeholder="Write your personal message here... 
+Example: 
+My love, every day without you feels incomplete. 
+I count the moments until we're together again. 
+You're always in my thoughts, no matter the distance. 
+💕"></textarea>
+                    <button id="update-btn"><i class="fas fa-heart"></i> Update Message</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-section">
+            <div class="controls">
+                <h3><i class="fas fa-magic"></i> Customize Your Rose</h3>
+                <div class="color-controls">
+                    <button id="red-rose" class="color-btn active" data-color="#ff6b8b">Red Rose</button>
+                    <button id="pink-rose" class="color-btn" data-color="#ff9ebb">Pink Rose</button>
+                    <button id="white-rose" class="color-btn" data-color="#ffffff">White Rose</button>
+                    <button id="purple-rose" class="color-btn" data-color="#d8b4fe">Purple Rose</button>
+                </div>
+                <div class="animation-controls">
+                    <button id="bloom-btn"><i class="fas fa-expand"></i> Bloom Rose</button>
+                    <button id="reset-btn"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+            
+            <div class="distance-counter">
+                <div class="counter-box">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="counter-text">
+                        <span id="distance-km">3,841</span>
+                        <small>Kilometers Apart</small>
+                    </div>
+                </div>
+                <div class="counter-box">
+                    <i class="far fa-heart"></i>
+                    <div class="counter-text">
+                        <span id="love-percent">100%</span>
+                        <small>Love Remaining</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Made with <i class="fas fa-heart heartbeat"></i> from Pakistan to Hong Kong</p>
+            <p class="footer-note">This digital rose will never wilt. Refresh the page to see it bloom again!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

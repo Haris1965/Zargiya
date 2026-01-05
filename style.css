@@ -1,0 +1,412 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: #ff6b8b;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255, 107, 139, 0.5);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #a5b4fc;
+    font-weight: 300;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+/* Rose Animation Styles */
+.flower-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    position: relative;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rose {
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 1s ease;
+}
+
+.petals {
+    position: relative;
+    z-index: 10;
+}
+
+.petal {
+    position: absolute;
+    width: 80px;
+    height: 100px;
+    background: linear-gradient(45deg, #ff6b8b, #ff9ebb);
+    border-radius: 0 50% 50% 50%;
+    transform-origin: bottom left;
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Petal positions */
+.p1 { transform: rotate(0deg); }
+.p2 { transform: rotate(45deg); }
+.p3 { transform: rotate(90deg); }
+.p4 { transform: rotate(135deg); }
+.p5 { transform: rotate(180deg); }
+.p6 { transform: rotate(225deg); }
+.p7 { transform: rotate(270deg); }
+.p8 { transform: rotate(315deg); }
+
+.stem {
+    position: absolute;
+    width: 12px;
+    height: 300px;
+    background: linear-gradient(to right, #2d5a27, #3a7c31);
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 6px;
+    z-index: 1;
+}
+
+.leaf {
+    position: absolute;
+    width: 40px;
+    height: 60px;
+    background: linear-gradient(135deg, #3a7c31, #4a9c3f);
+    border-radius: 0 50% 50% 0;
+    z-index: 2;
+}
+
+.leaf1 {
+    top: 180px;
+    left: 60%;
+    transform: rotate(30deg);
+}
+
+.leaf2 {
+    top: 250px;
+    left: 40%;
+    transform: rotate(-20deg) scaleX(-1);
+}
+
+.thorns {
+    position: absolute;
+    z-index: 3;
+}
+
+.thorn {
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: #8b4513;
+    border-radius: 2px;
+}
+
+.t1 { top: 120px; left: 52%; transform: rotate(45deg); }
+.t2 { top: 200px; left: 48%; transform: rotate(-45deg); }
+.t3 { top: 280px; left: 52%; transform: rotate(45deg); }
+
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: sparkle 2s infinite;
+    opacity: 0;
+}
+
+.s1 { top: 20%; left: 30%; animation-delay: 0s; }
+.s2 { top: 40%; left: 70%; animation-delay: 0.5s; }
+.s3 { top: 60%; left: 20%; animation-delay: 1s; }
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+/* Message Box */
+.message-box {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.message-header i {
+    font-size: 2rem;
+    color: #ff6b8b;
+}
+
+.message-header h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #fff;
+}
+
+.message-content {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    min-height: 200px;
+    border-left: 4px solid #ff6b8b;
+}
+
+#message-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #e2e8f0;
+    font-weight: 300;
+}
+
+.edit-section {
+    margin-top: 30px;
+}
+
+#custom-message {
+    width: 100%;
+    height: 150px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 107, 139, 0.3);
+    border-radius: 15px;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    resize: vertical;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+#custom-message:focus {
+    outline: none;
+    border-color: #ff6b8b;
+}
+
+#custom-message::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#update-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #ff6b8b, #ff9ebb);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#update-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 107, 139, 0.3);
+}
+
+/* Interactive Section */
+.interactive-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controls {
+    margin-bottom: 30px;
+}
+
+.controls h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #a5b4fc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-controls, .animation-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.color-btn, #bloom-btn, #reset-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.color-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.color-btn.active {
+    border-color: #ff6b8b;
+    box-shadow: 0 0 15px rgba(255, 107, 139, 0.5);
+}
+
+#bloom-btn {
+    background: linear-gradient(45deg, #4f46e5, #7c3aed);
+    color: white;
+}
+
+#reset-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.distance-counter {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.counter-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    min-width: 250px;
+    flex: 1;
+}
+
+.counter-box i {
+    font-size: 3rem;
+    color: #ff6b8b;
+}
+
+.counter-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.counter-text span {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.counter-text small {
+    color: #a5b4fc;
+    font-size: 0.9rem;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #a5b4fc;
+}
+
+.heartbeat {
+    color: #ff6b8b;
+    animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.footer-note {
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .flower-container {
+        height: 400px;
+    }
+    
+    .counter-box {
+        min-width: 100%;
+    }
+}
