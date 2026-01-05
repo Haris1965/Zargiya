@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const sparkles = document.querySelectorAll('.sparkle');
     const distanceKm = document.getElementById('distance-km');
     const lovePercent = document.getElementById('love-percent');
+    const profileImage = document.getElementById('profile-image');
+    const profileContainer = document.querySelector('.profile-container');
+
+    // ========== MUSIC PLAYER ELEMENTS ==========
+    const backgroundMusic = document.getElementById('background-music');
+    const playBtn = document.getElementById('play-btn');
+    const pauseBtn = document.getElementById('pause-btn');
+    const volumeUp = document.getElementById('volume-up');
+    const volumeDown = document.getElementById('volume-down');
+    const muteBtn = document.getElementById('mute-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumePercent = document.getElementById('volume-percent');
+    // ===========================================
 
     // Bloom animation
     function bloomRose() {
@@ -55,6 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update counters with animation
         animateCounter(distanceKm, 0, 3841, 2000);
         createHeartRain();
+        
+        // Button feedback
+        bloomBtn.innerHTML = '<i class="fas fa-check"></i> Blooming!';
+        bloomBtn.style.background = 'linear-gradient(45deg, #10b981, #34d399)';
+        setTimeout(() => {
+            bloomBtn.innerHTML = '<i class="fas fa-expand"></i> Bloom Again';
+            bloomBtn.style.background = 'linear-gradient(45deg, #4f46e5, #7c3aed)';
+        }, 1500);
     }
 
     // Send love effect
@@ -75,6 +96,270 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             lovePercent.style.transform = 'scale(1)';
         }, 300);
+        
+        // Button feedback
+        loveBtn.innerHTML = '<i class="fas fa-heart"></i> Love Sent!';
+        loveBtn.style.background = 'linear-gradient(45deg, #ff4d8d, #ff6b8b)';
+        setTimeout(() => {
+            loveBtn.innerHTML = '<i class="fas fa-heart"></i> Send Love';
+            loveBtn.style.background = 'linear-gradient(45deg, #ff6b8b, #ff4d8d)';
+        }, 1500);
+    }
+
+    // ========== MUSIC PLAYER FUNCTIONS ==========
+    
+    // Initialize music player with auto-play
+    function initializeMusicPlayer() {
+        // Set initial volume
+        backgroundMusic.volume = 0.5;
+        volumeSlider.value = 0.5;
+        volumePercent.textContent = '50%';
+        
+        // Try to auto-play immediately (modern browsers require user interaction)
+        setTimeout(() => {
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Auto-play succeeded
+                    showMusicNotification('Music started! 🎵');
+                    createMusicNotes();
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'flex';
+                }).catch(error => {
+                    // Auto-play failed, show play button
+                    console.log('Auto-play prevented, waiting for user interaction');
+                    playBtn.style.display = 'flex';
+                    pauseBtn.style.display = 'none';
+                    showMusicNotification('Click play to start music ▶️');
+                });
+            }
+        }, 1000); // Delay to ensure page is loaded
+        
+        // Play button
+        playBtn.addEventListener('click', function() {
+            backgroundMusic.play();
+            createMusicNotes();
+            showMusicNotification('Music playing... 💕');
+            
+            // Switch to pause button
+            this.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+            
+            // Button feedback
+            this.style.background = 'linear-gradient(45deg, #10b981, #34d399)';
+            setTimeout(() => {
+                this.style.background = 'linear-gradient(45deg, #ff6b8b, #ff4d8d)';
+            }, 300);
+        });
+        
+        // Pause button
+        pauseBtn.addEventListener('click', function() {
+            backgroundMusic.pause();
+            showMusicNotification('Music paused');
+            
+            // Switch to play button
+            this.style.display = 'none';
+            playBtn.style.display = 'flex';
+            
+            // Button feedback
+            this.style.background = 'linear-gradient(45deg, #f59e0b, #fbbf24)';
+            setTimeout(() => {
+                this.style.background = 'linear-gradient(45deg, #ff6b8b, #ff4d8d)';
+            }, 300);
+        });
+        
+        // Volume up
+        volumeUp.addEventListener('click', function() {
+            if (backgroundMusic.volume < 1) {
+                backgroundMusic.volume = Math.min(1, backgroundMusic.volume + 0.1);
+                volumeSlider.value = backgroundMusic.volume;
+                updateVolumeDisplay();
+            }
+            
+            // Button feedback
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Volume down
+        volumeDown.addEventListener('click', function() {
+            if (backgroundMusic.volume > 0) {
+                backgroundMusic.volume = Math.max(0, backgroundMusic.volume - 0.1);
+                volumeSlider.value = backgroundMusic.volume;
+                updateVolumeDisplay();
+            }
+            
+            // Button feedback
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Mute button
+        muteBtn.addEventListener('click', function() {
+            backgroundMusic.muted = !backgroundMusic.muted;
+            if (backgroundMusic.muted) {
+                this.innerHTML = '<i class="fas fa-volume-off"></i>';
+                showMusicNotification('Music muted');
+                this.style.background = 'linear-gradient(45deg, #6b7280, #9ca3af)';
+            } else {
+                this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                showMusicNotification('Music unmuted');
+                this.style.background = 'linear-gradient(45deg, #ff6b8b, #ff4d8d)';
+            }
+        });
+        
+        // Volume slider
+        volumeSlider.addEventListener('input', function() {
+            backgroundMusic.volume = this.value;
+            updateVolumeDisplay();
+        });
+        
+        // Show music notes when playing
+        backgroundMusic.addEventListener('play', function() {
+            // Start creating music notes periodically
+            if (window.musicNoteInterval) clearInterval(window.musicNoteInterval);
+            window.musicNoteInterval = setInterval(createMusicNotes, 2000);
+        });
+        
+        backgroundMusic.addEventListener('pause', function() {
+            // Stop creating music notes
+            if (window.musicNoteInterval) clearInterval(window.musicNoteInterval);
+        });
+        
+        // Hide/show buttons based on playback state
+        backgroundMusic.addEventListener('playing', function() {
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+        });
+        
+        backgroundMusic.addEventListener('pause', function() {
+            playBtn.style.display = 'flex';
+            pauseBtn.style.display = 'none';
+        });
+    }
+
+    // Update volume display
+    function updateVolumeDisplay() {
+        const percent = Math.round(backgroundMusic.volume * 100);
+        volumePercent.textContent = percent + '%';
+        
+        // Change color based on volume
+        if (percent === 0) {
+            volumePercent.style.color = '#ef4444';
+        } else if (percent < 50) {
+            volumePercent.style.color = '#f59e0b';
+        } else {
+            volumePercent.style.color = '#10b981';
+        }
+    }
+
+    // Create floating music notes
+    function createMusicNotes() {
+        if (backgroundMusic.paused) return;
+        
+        const notes = ['♪', '♫', '♬', '🎵', '🎶', '🎼'];
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                const note = document.createElement('div');
+                note.className = 'music-note';
+                note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                note.style.left = Math.random() * 100 + 'vw';
+                note.style.top = '100vh';
+                note.style.color = ['#ff6b8b', '#a5b4fc', '#34d399', '#fbbf24'][Math.floor(Math.random() * 4)];
+                note.style.fontSize = Math.random() * 20 + 20 + 'px';
+                
+                document.body.appendChild(note);
+                
+                setTimeout(() => {
+                    note.remove();
+                }, 2000);
+            }, i * 200);
+        }
+    }
+
+    // Show music notification
+    function showMusicNotification(message) {
+        let notification = document.querySelector('.music-notification');
+        
+        if (!notification) {
+            notification = document.createElement('div');
+            notification.className = 'music-notification';
+            document.body.appendChild(notification);
+        }
+        
+        notification.innerHTML = `<i class="fas fa-music"></i> ${message}`;
+        notification.style.display = 'flex';
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    // ========== END MUSIC PLAYER FUNCTIONS ==========
+
+    // Profile picture heart effect
+    function createPhotoHeartEffect() {
+        // Create multiple hearts
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💖';
+                heart.style.position = 'absolute';
+                heart.style.top = '50%';
+                heart.style.left = '50%';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.style.transform = 'translate(-50%, -50%)';
+                heart.style.zIndex = '1000';
+                heart.style.opacity = '1';
+                heart.style.pointerEvents = 'none';
+                heart.style.userSelect = 'none';
+                
+                // Random direction
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                // Add to container
+                profileContainer.appendChild(heart);
+                
+                // Animate
+                const startTime = Date.now();
+                const duration = 1500;
+                
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    heart.style.transform = `translate(
+                        calc(-50% + ${x * progress}px),
+                        calc(-50% + ${y * progress}px)
+                    )`;
+                    heart.style.opacity = (1 - progress).toString();
+                    heart.style.scale = (1 + progress * 0.5).toString();
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        heart.remove();
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }, i * 100);
+        }
+        
+        // Add pulse effect to the profile picture
+        profileImage.style.animation = 'pulse 0.5s ease';
+        setTimeout(() => {
+            profileImage.style.animation = '';
+        }, 500);
     }
 
     // Create heart explosion effect
@@ -162,19 +447,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Change rose color
-    function changeRoseColor(color) {
+    function changeRoseColor(color, button) {
         petals.forEach(petal => {
             petal.style.background = `linear-gradient(45deg, ${color}, ${lightenColor(color, 30)})`;
         });
         
         // Update active button
         colorButtons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        button.classList.add('active');
         
         // Add color transition effect
         rose.style.filter = 'brightness(1.2)';
         setTimeout(() => {
             rose.style.filter = 'brightness(1)';
+        }, 300);
+        
+        // Button feedback
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            button.style.transform = 'scale(1)';
         }, 300);
     }
 
@@ -208,16 +499,25 @@ document.addEventListener('DOMContentLoaded', function() {
         rose.style.animation = 'none';
         
         // Reset to red rose
-        changeRoseColor('#ff6b8b');
-        colorButtons.forEach(btn => btn.classList.remove('active'));
-        document.getElementById('red-rose').classList.add('active');
+        changeRoseColor('#ff6b8b', document.getElementById('red-rose'));
         
         // Reset counters
         distanceKm.textContent = '3,841';
         lovePercent.textContent = '24/7';
         lovePercent.style.color = '';
+        
+        // Button feedback
+        resetBtn.innerHTML = '<i class="fas fa-check"></i> Reset!';
+        resetBtn.style.background = 'linear-gradient(45deg, #6b7280, #9ca3af)';
+        setTimeout(() => {
+            resetBtn.innerHTML = '<i class="fas fa-redo"></i> Reset';
+            resetBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+        }, 1500);
     }
 
+    // Initialize music player
+    initializeMusicPlayer();
+    
     // Event Listeners
     bloomBtn.addEventListener('click', bloomRose);
     resetBtn.addEventListener('click', resetRose);
@@ -225,8 +525,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     colorButtons.forEach(button => {
         button.addEventListener('click', function() {
-            changeRoseColor(this.getAttribute('data-color'));
+            changeRoseColor(this.getAttribute('data-color'), this);
         });
+    });
+
+    // Profile picture click event
+    profileContainer.addEventListener('click', function(e) {
+        createPhotoHeartEffect();
+        
+        // Add special message effect
+        const messageContent = document.querySelector('.message-content');
+        messageContent.style.borderColor = '#ff6b8b';
+        messageContent.style.boxShadow = '0 0 40px rgba(255, 107, 139, 0.4)';
+        
+        setTimeout(() => {
+            messageContent.style.borderColor = '';
+            messageContent.style.boxShadow = '';
+        }, 1000);
     });
 
     // Auto-bloom on page load
@@ -245,26 +560,24 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 
+    // Create pulse animation for profile picture
+    if (!document.getElementById('pulse-animation')) {
+        const style = document.createElement('style');
+        style.id = 'pulse-animation';
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.08); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     // Create floating hearts periodically
     setInterval(() => createFloatingHeart(false), 3000);
 
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.key === 'b') {
-            event.preventDefault();
-            bloomRose();
-        }
-        if (event.ctrlKey && event.key === 'r') {
-            event.preventDefault();
-            resetRose();
-        }
-        if (event.ctrlKey && event.key === 'l') {
-            event.preventDefault();
-            sendLove();
-        }
-    });
-
-    // Add click effect on message
+    // Add click effect on message box
     const messageContent = document.querySelector('.message-content');
     messageContent.addEventListener('click', function() {
         this.style.transform = 'scale(0.98)';
