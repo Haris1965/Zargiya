@@ -2,12 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get DOM elements
     const petals = document.querySelectorAll('.petal');
     const rose = document.querySelector('.rose');
-    const updateBtn = document.getElementById('update-btn');
-    const customMessage = document.getElementById('custom-message');
-    const messageText = document.getElementById('message-text');
     const colorButtons = document.querySelectorAll('.color-btn');
     const bloomBtn = document.getElementById('bloom-btn');
     const resetBtn = document.getElementById('reset-btn');
+    const loveBtn = document.getElementById('love-btn');
     const sparkles = document.querySelectorAll('.sparkle');
     const distanceKm = document.getElementById('distance-km');
     const lovePercent = document.getElementById('love-percent');
@@ -56,62 +54,111 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update counters with animation
         animateCounter(distanceKm, 0, 3841, 2000);
-        animateCounter(lovePercent, 0, 100, 1500, '%');
+        createHeartRain();
+    }
+
+    // Send love effect
+    function sendLove() {
+        createHeartExplosion();
+        
+        // Add message effect
+        const messageContent = document.querySelector('.message-content');
+        messageContent.style.boxShadow = '0 0 30px rgba(255, 107, 139, 0.5)';
+        setTimeout(() => {
+            messageContent.style.boxShadow = 'none';
+        }, 1000);
+        
+        // Update love counter
+        lovePercent.textContent = "24/7";
+        lovePercent.style.color = '#ff6b8b';
+        lovePercent.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            lovePercent.style.transform = 'scale(1)';
+        }, 300);
+    }
+
+    // Create heart explosion effect
+    function createHeartExplosion() {
+        for (let i = 0; i < 50; i++) {
+            createFloatingHeart(true);
+        }
+    }
+
+    // Create heart rain effect
+    function createHeartRain() {
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => createFloatingHeart(false), i * 100);
+        }
+    }
+
+    // Create floating heart
+    function createFloatingHeart(isExplosion) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.position = 'fixed';
+        heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+        
+        if (isExplosion) {
+            heart.style.left = '50%';
+            heart.style.top = '50%';
+            heart.style.transform = 'translate(-50%, -50%)';
+            heart.style.opacity = '1';
+            
+            // Explosion effect
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 5 + 2;
+            const vx = Math.cos(angle) * velocity;
+            const vy = Math.sin(angle) * velocity;
+            
+            let x = 50;
+            let y = 50;
+            const animate = () => {
+                x += vx;
+                y += vy;
+                heart.style.left = x + '%';
+                heart.style.top = y + '%';
+                heart.style.opacity = parseFloat(heart.style.opacity) - 0.02;
+                
+                if (parseFloat(heart.style.opacity) > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    heart.remove();
+                }
+            };
+            requestAnimationFrame(animate);
+        } else {
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.opacity = '0.7';
+            heart.style.animation = `floatHeart ${Math.random() * 5 + 5}s linear forwards`;
+        }
+        
+        heart.style.zIndex = '9999';
+        heart.style.pointerEvents = 'none';
+        heart.style.userSelect = 'none';
+        
+        document.body.appendChild(heart);
+        
+        if (!isExplosion) {
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
     }
 
     // Counter animation function
-    function animateCounter(element, start, end, duration, suffix = '') {
+    function animateCounter(element, start, end, duration) {
         let startTimestamp = null;
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             const current = Math.floor(progress * (end - start) + start);
-            element.textContent = current + suffix;
+            element.textContent = current.toLocaleString();
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             }
         };
         window.requestAnimationFrame(step);
-    }
-
-    // Update message function
-    function updateMessage() {
-        const newMessage = customMessage.value.trim();
-        if (newMessage) {
-            messageText.innerHTML = newMessage.replace(/\n/g, '<br>');
-            
-            // Add visual feedback
-            const messageContent = document.querySelector('.message-content');
-            messageContent.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                messageContent.style.transform = 'scale(1)';
-            }, 300);
-            
-            // Add heart animation
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
-            heart.style.position = 'absolute';
-            heart.style.fontSize = '2rem';
-            heart.style.animation = 'floatUp 2s ease-out forwards';
-            messageContent.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.remove();
-            }, 2000);
-            
-            // Create float animation if not exists
-            if (!document.getElementById('float-animation')) {
-                const style = document.createElement('style');
-                style.id = 'float-animation';
-                style.textContent = `
-                    @keyframes floatUp {
-                        0% { opacity: 1; transform: translateY(0) scale(1); }
-                        100% { opacity: 0; transform: translateY(-100px) scale(0.5); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
     }
 
     // Change rose color
@@ -166,16 +213,15 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('red-rose').classList.add('active');
         
         // Reset counters
-        distanceKm.textContent = '3841';
-        lovePercent.textContent = '100%';
+        distanceKm.textContent = '3,841';
+        lovePercent.textContent = '24/7';
+        lovePercent.style.color = '';
     }
 
     // Event Listeners
-    updateBtn.addEventListener('click', updateMessage);
-    
     bloomBtn.addEventListener('click', bloomRose);
-    
     resetBtn.addEventListener('click', resetRose);
+    loveBtn.addEventListener('click', sendLove);
     
     colorButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -186,27 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-bloom on page load
     setTimeout(bloomRose, 1000);
 
-    // Add floating hearts randomly
-    function createFloatingHearts() {
-        const heart = document.createElement('div');
-        heart.innerHTML = '❤️';
-        heart.style.position = 'fixed';
-        heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.top = '100vh';
-        heart.style.opacity = '0.7';
-        heart.style.zIndex = '-1';
-        heart.style.pointerEvents = 'none';
-        heart.style.animation = `floatHeart ${Math.random() * 5 + 5}s linear forwards`;
-        
-        document.body.appendChild(heart);
-        
-        setTimeout(() => {
-            heart.remove();
-        }, 6000);
-    }
-
-    // Create floating hearts animation
+    // Create floating hearts animation CSS
     if (!document.getElementById('heart-animation')) {
         const style = document.createElement('style');
         style.id = 'heart-animation';
@@ -220,8 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Create floating hearts periodically
-    setInterval(createFloatingHearts, 2000);
-    createFloatingHearts();
+    setInterval(() => createFloatingHeart(false), 3000);
 
     // Add keyboard shortcuts
     document.addEventListener('keydown', function(event) {
@@ -233,6 +258,20 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             resetRose();
         }
+        if (event.ctrlKey && event.key === 'l') {
+            event.preventDefault();
+            sendLove();
+        }
+    });
+
+    // Add click effect on message
+    const messageContent = document.querySelector('.message-content');
+    messageContent.addEventListener('click', function() {
+        this.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 200);
+        createHeartExplosion();
     });
 
     // Initialize with a bloomed rose
