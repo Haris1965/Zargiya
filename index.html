@@ -11,8 +11,26 @@
 <body>
     <div class="container">
         <header class="header">
+            <!-- Profile picture section -->
+            <div class="profile-container">
+                <div class="profile-pic">
+                    <!-- CHANGE THIS: Replace "her-photo.jpg" with your actual photo filename -->
+                    <img src="her-photo.jpg" 
+                         alt="My Beautiful Love" 
+                         class="profile-image"
+                         id="profile-image">
+                    <div class="profile-ring"></div>
+                    <div class="profile-heart">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                </div>
+                <div class="profile-overlay">
+                    <span class="profile-text">My Love ❤️</span>
+                </div>
+            </div>
+            
             <h1><i class="fas fa-heart"></i> FOR MY THEODORE <i class="fas fa-heart"></i></h1>
-            <p class="subtitle">Distance means so little when someone means so much ❤️</p>
+            <p class="subtitle">Distance means so little when someone means so much  ❤️</p>
         </header>
 
         <div class="main-content">
@@ -55,11 +73,11 @@
             <div class="message-box">
                 <div class="message-header">
                     <i class="fas fa-envelope-open-heart"></i>
-                    <h2>To The One Who Holds My Heart</h2>
+                    <h2>To The One Who Holds My Heart: Lishbah 💝 </h2>
                 </div>
                 <div class="message-content">
                     <div class="message-text">
-                        <p class="message-line">MY Zargiyaa,</p>
+                        <p class="message-line">My most kind hearted khanum,</p>
                         
                         <p class="message-line">They say absence makes the heart grow fonder, but mine was already full of you. Now it just overflows.</p>
                         
@@ -87,8 +105,8 @@
         <div class="special-section">
             <div class="quran-verse">
                 <i class="fas fa-star-and-crescent"></i>
-                <p>"And one of His signs is that He created for you spouses from among yourselves so that you may find comfort in them. And He has placed between you compassion and mercy."</p>
-                <p class="verse-ref">[Quran 30:21]</p>
+                <p>" لَئِن شَكَرْتُمْ لَأَزِیدَنَّكُمْ : If you are grateful, I will surely increase you ."</p>
+                <p class="verse-ref">[Quran 14:7]</p>
             </div>
         </div>
 
@@ -135,7 +153,7 @@
 
         <footer class="footer">
             <p>Made with <i class="fas fa-heart heartbeat"></i> from Pakistan to Hong Kong</p>
-            <p class="footer-note">This rose will never wilt • Refresh to see it bloom again • Press Ctrl+B to bloom • Press Ctrl+R to reset</p>
+            <p class="footer-note">This digital rose will never wilt • Click buttons to interact • Refresh page to see it bloom again</p>
             <div class="footer-icons">
                 <i class="fas fa-heart"></i>
                 <i class="fas fa-star"></i>
@@ -144,10 +162,48 @@
                 <i class="fas fa-heart"></i>
             </div>
         </footer>
+        
+        <!-- Music Player Section - ADD THIS SECTION -->
+        <div class="music-player">
+            <audio id="background-music" loop autoplay>
+                <!-- Add your song file here -->
+                <source src="romantic-song.mp3" type="audio/mpeg">
+                <source src="romantic-song.ogg" type="audio/ogg">
+                Your browser does not support the audio element.
+            </audio>
+            
+            <div class="music-controls">
+                <button id="play-btn" class="music-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="pause-btn" class="music-btn">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button id="volume-up" class="music-btn">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="volume-down" class="music-btn">
+                    <i class="fas fa-volume-down"></i>
+                </button>
+                <button id="mute-btn" class="music-btn">
+                    <i class="fas fa-volume-mute"></i>
+                </button>
+                <div class="song-title">
+                    <i class="fas fa-music"></i>
+                    <span>For My Love 💕</span>
+                </div>
+            </div>
+            
+            <div class="volume-slider-container">
+                <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+                <div class="volume-indicator">
+                    <span id="volume-percent">50%</span>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
-
